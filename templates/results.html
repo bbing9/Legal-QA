@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+        .result {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .result h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+        .highlight {
+            background-color: yellow;
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "Tab") {
+                event.preventDefault();
+                window.location.href = "/";
+            }
+        });
+    </script>
+</head>
+<body>
+    <h1>Result for: "{{ query }}"</h1>
+
+    {% if answers %}
+    <div class="result">
+        <p>
+            <strong>Passage:</strong>
+            {{ answers[0].passage | replace(answers[0].answer, '<span class="highlight">' + answers[0].answer + '</span>') | safe }}
+        </p>
+        <p><strong>Answer:</strong> <span class="highlight">{{ answers[0].answer }}</span></p>
+    </div>
+    {% else %}
+    <p>No results found.</p>
+    {% endif %}
+
+    <a href="/">Back to Home</a>
+</body>
+</html>
