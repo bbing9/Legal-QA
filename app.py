@@ -91,7 +91,7 @@ index_path = "faiss_index.bin"
 chunks_path = "chunks.pkl"
 
 # Control whether to vectorize
-VECTORIZE = True  # 벡터화를 수행할지 여부 (True/False)
+VECTORIZE = True  # Choose vectorize option (True/False)
 
 if VECTORIZE:
     if os.path.exists(index_path) and os.path.exists(chunks_path):
@@ -105,7 +105,7 @@ if VECTORIZE:
         print("No existing faiss index, instead saving new faiss index")
 
     # Process new PDF
-    new_pdf_path = ""  # 벡터화 할 PDF 경로
+    new_pdf_path = ""  # pdf path
     new_text = extract_text_from_pdf(new_pdf_path)
     new_chunks = split_text_into_chunks(new_text, chunk_size=1000)
     new_embeddings = generate_embeddings(new_chunks, embedding_model)
