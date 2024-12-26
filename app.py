@@ -90,17 +90,45 @@ embedding_model = SentenceTransformer(EMBEDDING_MODEL_NAME, device="cuda")
 index_path = "faiss_index.bin"
 chunks_path = "chunks.pkl"
 
-# Process PDF and create/load FAISS index
-pdf_path = ""  # PDF file path
+# Control whether to vectorize
+VECTORIZE = True  # 벡터화를 수행할지 여부 (True/False)
 
-if os.path.exists(index_path) and os.path.exists(chunks_path):
-    index, chunks = load_faiss_index(index_path, chunks_path)
-else:
-    text = extract_text_from_pdf(pdf_path)
-    chunks = split_text_into_chunks(text, chunk_size=1000)
-    embeddings = generate_embeddings(chunks, embedding_model)
-    index = create_faiss_index(embeddings)
+if VECTORIZE:
+    if os.path.exists(index_path) and os.path.exists(chunks_path):
+        # Load existing data
+        index, chunks = load_faiss_index(index_path, chunks_path)
+        print("Load existing faiss index")
+    else:
+        # Create new index and chunks
+        index = None
+        chunks = []
+        print("No existing faiss index, instead saving new faiss index")
+
+    # Process new PDF
+    new_pdf_path = ""  # 벡터화 할 PDF 경로
+    new_text = extract_text_from_pdf(new_pdf_path)
+    new_chunks = split_text_into_chunks(new_text, chunk_size=1000)
+    new_embeddings = generate_embeddings(new_chunks, embedding_model)
+
+    if index is None:
+        # Create new index
+        index = create_faiss_index(new_embeddings)
+        chunks = new_chunks
+    else:
+        # Merge with existing data
+        index.add(new_embeddings.cpu().numpy())
+        chunks.extend(new_chunks)
+
+    # Save updated data
     save_faiss_index(index, chunks, index_path, chunks_path)
+    print("Appending new pdf's faiss index completed.")
+else:
+    if os.path.exists(index_path) and os.path.exists(chunks_path):
+        # Load existing data only
+        index, chunks = load_faiss_index(index_path, chunks_path)
+        print("Just Load existing faiss index, No vectorization")
+    else:
+        print("No existing faiss index. Set 'VECTORIZE = True' to create new faiss index.")
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -108,7 +136,7 @@ def home():
         query = request.form['query']
 
         # Search FAISS index
-        results = search_faiss_index(query, index, chunks, embedding_model, k=1)
+        results = search_faiss_index(query, index, chunks, embedding_model, k=3)
         top_passages = [passage for passage, _ in results]
 
         # Send request to MRC API
