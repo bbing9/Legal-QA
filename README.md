@@ -1,7 +1,11 @@
 # Legal_ODQA
 #### 개인정보보호법(한국) / PERSONAL INFORMATION PROTECTION ACT(Korea) : ko
-https://github.com/user-attachments/assets/a84e2fcb-6415-48ed-a7be-b16ee5a52489
+https://github.com/user-attachments/assets/803bcf70-a09c-4393-bf0f-69edfc7150de
+
+
 
 #### 형법(텍사스, 미국) / Penal Code(Texas, United States) : en
-https://github.com/user-attachments/assets/6860c6d9-f934-463c-bc46-7f38f975ead9
+https://github.com/user-attachments/assets/02ecb798-4f88-4088-b69b-d456e7402bfa
+
+
 
