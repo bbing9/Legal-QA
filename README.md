@@ -1,4 +1,4 @@
-# Legal_ODQA
+# Legal-QA
 #### 개인정보보호법(한국) / PERSONAL INFORMATION PROTECTION ACT(Korea) : ko
 https://github.com/user-attachments/assets/803bcf70-a09c-4393-bf0f-69edfc7150de
 
